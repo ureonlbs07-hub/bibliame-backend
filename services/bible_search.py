@@ -1,21 +1,28 @@
 import json
 import numpy as np
+import os
 from openai import OpenAI
 
 client = OpenAI()
 
-# carregar embeddings
-vectors = np.load("data/bible_vectors.npy")
+# carregar embeddings se existirem
+if os.path.exists("data/bible_vectors.npy"):
+    vectors = np.load("data/bible_vectors.npy")
+else:
+    vectors = None
 
-# carregar referências
-with open("data/bible_refs.json") as f:
-    refs = json.load(f)
+# carregar referências se existirem
+if os.path.exists("data/bible_refs.json"):
+    with open("data/bible_refs.json") as f:
+        refs = json.load(f)
+else:
+    refs = []
 
 # carregar texto da bíblia
-try:
+if os.path.exists("data/almeida.json"):
     with open("data/almeida.json") as f:
         bible = json.load(f)
-except:
+else:
     bible = None
 
 
