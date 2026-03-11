@@ -3,7 +3,7 @@ import numpy as np
 import os
 from openai import OpenAI
 
-client = OpenAI()
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 # carregar embeddings se existirem
 if os.path.exists("data/bible_vectors.npy"):
@@ -35,6 +35,10 @@ def embed_query(text):
 
 
 def search(query, top_k=5):
+
+    if vectors is None:
+        return []
+
     q = embed_query(query)
 
     scores = vectors @ q
@@ -43,7 +47,7 @@ def search(query, top_k=5):
     results = []
 
     for i in best:
-        ref = refs[i]["reference"]
+        ref = refs[i]["reference"] if i < len(refs) else f"verse_{i}"
 
         results.append({
             "reference": ref,

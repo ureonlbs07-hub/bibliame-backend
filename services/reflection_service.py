@@ -1,8 +1,8 @@
+import os
 from openai import OpenAI
 from services.bible_search import search
 
-client = OpenAI()
-
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 def generate_reflection(text):
 
