@@ -18,3 +18,10 @@ def root():
 def reflection(req: ReflectionRequest):
     result = generate_reflection(req.text)
     return result
+
+from data_loader import ensure_data
+
+@app.on_event("startup")
+def startup_event():
+    ensure_data()
+
